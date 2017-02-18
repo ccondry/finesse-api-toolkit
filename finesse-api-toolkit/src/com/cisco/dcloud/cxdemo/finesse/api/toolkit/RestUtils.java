@@ -9,6 +9,9 @@ import java.util.Map.Entry;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.MultivaluedMap;
 
+import com.cisco.ccbu.cce.unifiedconfig.toolkit.BaseApiBeanWithName;
+import com.cisco.ccbu.cce.unifiedconfig.toolkit.BaseApiListBean;
+import com.cisco.ccbu.cce.unifiedconfig.toolkit.RESTClient;
 import com.sun.jersey.core.util.MultivaluedMapImpl;
 
 public class RestUtils {
@@ -36,6 +39,20 @@ public class RestUtils {
 		String refUrl = getRefUrlBase(restClient, beanClass) + id;
 		ReferenceBean refBean = new ReferenceBean(refUrl);
 		return refBean;
+	}
+	
+	public static <T extends BaseApiBeanWithName, L extends BaseApiListBean<T>> T lookupSingle(RESTClient restClient, String query, Class<T> beanType, Class<L> beanListType) {
+		List<T> list = lookupMultiple(restClient, query, beanType, beanListType);
+		if (list == null) {
+			return null;
+		}
+		// Look for exact matching name and return that item
+		for(T item: list) {
+			if(item != null && item.getName().equals(query))
+				return (T) item;
+		}
+		// no exact matches found
+		return null;
 	}
 	
 	public static <T extends BaseApiBean, L extends BaseApiListBean<T>> List<T> lookupMultiple(RestClient restClient, String query, Class<T> beanType, Class<L> beanListType) {

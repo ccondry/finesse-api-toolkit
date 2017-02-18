@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.ws.rs.Path;
 
 @Path("agent")
-@XmlSeeAlso({AgentSummary.class, Agent.class})
+@XmlSeeAlso({AgentSummary.class, User.class})
 public class AgentBase extends BaseApiBean {
   private String agentId;
   private Boolean agentStateTrace;

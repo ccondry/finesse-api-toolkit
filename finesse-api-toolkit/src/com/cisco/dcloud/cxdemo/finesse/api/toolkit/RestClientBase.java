@@ -17,7 +17,7 @@ import java.security.cert.X509Certificate;
 /**
  * A simple SSL REST Client wrapper to handle CRUD API calls to the webconfig service.
  */
-public class RestClientBase {
+public abstract class RestClientBase {
 	/** Jersey Web Resource to handle CRUD calls */
 	protected WebResource service = null;
 
@@ -40,10 +40,11 @@ public class RestClientBase {
 	 * Parameterized Constructor
 	 *
 	 * @param hostName fully qualified host name or IP
+	 * @param port 
 	 * @param username fully qualified username (with @domain)
 	 * @param password users password
 	 */
-	public RestClientBase(String hostName, String username, String password){
+	public RestClientBase(String hostName, int port, String username, String password){
 
 		// Create a trust manager that does not validate certificate chains
 		TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager(){
@@ -72,7 +73,7 @@ public class RestClientBase {
 		ClientConfig config=new DefaultClientConfig();
 		config.getProperties().put(HTTPSProperties.PROPERTY_HTTPS_PROPERTIES, new HTTPSProperties(null,context));
 
-		service = Client.create(config).resource("https://" + hostName);
+		service = Client.create(config).resource("https://" + hostName + ":" + port);
 		service.addFilter(new HTTPBasicAuthFilter(username,password));
 		//        service.addFilter(new LoggingFilter(System.out));
 	}

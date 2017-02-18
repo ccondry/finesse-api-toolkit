@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>finesse-api-toolkit</groupId>
+  <groupId>com.cisco.dcloud.cxdemo.toolkit</groupId>
   <artifactId>finesse-api-toolkit</artifactId>
   <version>11.5.1-SNAPSHOT</version>
   <name>Finesse API Toolkit</name>
@@ -20,6 +20,11 @@
   </build>
 
   <dependencies>
+ 		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20161205</version>
+		</dependency>
         <dependency>
             <groupId>com.sun.jersey</groupId>
             <artifactId>jersey-client</artifactId>

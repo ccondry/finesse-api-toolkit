@@ -21,19 +21,19 @@ import java.util.Map;
 /**
  * A simple SSL REST Client wrapper to handle CRUD API calls to the webconfig service.
  */
-public class RestClient extends RestClientBase {
+public abstract class RestClient extends RestClientBase {
 
 	private String baseUrl;
 
-	public RestClient(String hostName, String username, String password, String baseUrl) {
-		super(hostName, username, password);
+	public RestClient(String hostName, int port, String username, String password, String baseUrl) {
+		super(hostName, port, username, password);
 		this.setBaseUrl(baseUrl);
 	}
 
 	public void setBaseUrl(String baseUrl) {
 		this.baseUrl = baseUrl;
 	}
-	
+
 	public String getBaseUrl() {
 		return this.baseUrl;
 	}
@@ -284,7 +284,7 @@ public class RestClient extends RestClientBase {
 		return (T)get(bean.getClass(), bean.getRefURL());
 	}
 
-	private void handleErrors(ClientResponse response) {
+	protected void handleErrors(ClientResponse response) {
 		InputStream errorStream = response.getEntityInputStream();
 
 		String responseText;
@@ -337,38 +337,10 @@ public class RestClient extends RestClientBase {
 	 * @param path customized path to the service - eg campaign/<id>/import
 	 * @return list bean object of the
 	 */
-	@SuppressWarnings("rawtypes")
-	public <T extends BaseApiListBean> T getList (
-			Class<T> beanType, 
-			String searchCriteria, 
-			String path, 
-			Map<String, String> params) throws ApiException{
-		if(StringUtils.isNotBlank(searchCriteria)) {
-			params.put("q", searchCriteria);
-		}
 
-		MultivaluedMap<String, String> queryParams = RestUtils.map2MultivaluedMap(params);
-
-		return getList(beanType, path, queryParams);
-	}
-
-	@SuppressWarnings("rawtypes")
-	public <T extends BaseApiListBean> T getList (
-			Class<T> beanType, 
-			String path,
-			MultivaluedMap<String, String> queryParams) {
-		if(StringUtils.isEmpty(path)) {
-			path = beanType.getAnnotation(Path.class).value();
-		}
-
-		try {
-			WebResource r = service.path(baseUrl + path).queryParams(queryParams);
-			return r.accept(MediaType.APPLICATION_XML).get(beanType);
-		} catch(UniformInterfaceException e){
-			handleErrors(e.getResponse());
-		}
-
-		return null;
-	}
-
+//	@SuppressWarnings("rawtypes")
+//	public abstract <T extends BaseApiListBean> T getList (
+//			Class<T> beanType, 
+//			String path,
+//			MultivaluedMap<String, String> queryParams);
 }
