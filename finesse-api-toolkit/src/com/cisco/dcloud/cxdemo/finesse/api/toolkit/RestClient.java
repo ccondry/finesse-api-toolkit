@@ -242,7 +242,7 @@ public abstract class RestClient extends RestClientBase {
 	 */
 	public ClientResponse update(BaseApiBean bean) throws ApiException {
 		try{
-			ClientResponse response = service.path(bean.getRefURL()).type("application/xml").put(ClientResponse.class, bean);
+			ClientResponse response = service.path(bean.getUri()).type("application/xml").put(ClientResponse.class, bean);
 
 			if(response.getStatus() != 200 && response.getStatus() != 201 && response.getStatus() != 202){
 				handleErrors(response);
@@ -281,7 +281,7 @@ public abstract class RestClient extends RestClientBase {
 	public <T extends BaseApiBean> T updateAndGetBean(T bean) throws ApiException{
 
 		update(bean);
-		return (T)get(bean.getClass(), bean.getRefURL());
+		return (T)get(bean.getClass(), bean.getUri());
 	}
 
 	protected void handleErrors(ClientResponse response) {

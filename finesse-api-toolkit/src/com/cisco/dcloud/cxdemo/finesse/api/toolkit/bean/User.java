@@ -2,6 +2,7 @@ package com.cisco.dcloud.cxdemo.finesse.api.toolkit.bean;
 
 import com.cisco.dcloud.cxdemo.finesse.api.toolkit.BaseApiBean;
 import com.cisco.dcloud.cxdemo.finesse.api.toolkit.BaseApiListBean;
+//import com.cisco.dcloud.cxdemo.finesse.api.toolkit.bean.Team.TeamList;
 
 import javax.ws.rs.Path;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,11 +29,11 @@ public class User extends BaseApiBean {
 	private int teamId;
 	private String dialogs;
 	private String teamName;
-	private String uri;
 	private String stateChangeTime;
+	private ReasonCode reasonCode;
+	private MobileAgent mobileAgent;
+	private List<Team> teams;
 
-	//  @XmlElementWrapper(name="settings")
-	//  @XmlElement(name="settings")
 	public AgentSettings getSettings() {
 		return this.settings;
 	}
@@ -145,14 +146,6 @@ public class User extends BaseApiBean {
 		this.stateChangeTime = stateChangeTime;
 	}
 
-	public String getUri() {
-		return uri;
-	}
-
-	public void setUri(String uri) {
-		this.uri = uri;
-	}
-
 	public String getTeamName() {
 		return teamName;
 	}
@@ -161,10 +154,38 @@ public class User extends BaseApiBean {
 		this.teamName = teamName;
 	}
 
+	public ReasonCode getReasonCode() {
+		return reasonCode;
+	}
+
+	public void setReasonCode(ReasonCode reasonCode) {
+		this.reasonCode = reasonCode;
+	}
+
+	public MobileAgent getMobileAgent() {
+		return mobileAgent;
+	}
+
+	public void setMobileAgent(MobileAgent mobileAgent) {
+		this.mobileAgent = mobileAgent;
+	}
+
+//	@XmlElementWrapper(name = "teams")
+//	@XmlElement(name = "teams")
+	@XmlElementWrapper(name="teams")
+	@XmlElement(name="Team")
+	public List<Team> getTeams() {
+		return this.teams;
+	}
+	
+	public void setTeams(List<Team> teams) {
+		this.teams = teams;
+	}
+	
 	@Path("Users")
 	@XmlRootElement(name = "Users")
 	public static class UserList extends BaseApiListBean<User> {
-//		@XmlElementWrapper(name = "Users")
+		//		@XmlElementWrapper(name = "Users")
 		@XmlElement(name = "User")
 		@Override
 		public List<User> getItems() {
@@ -176,7 +197,7 @@ public class User extends BaseApiBean {
 			this.items = items;
 		}
 	}
-	
+
 	@XmlRootElement(name = "roles")
 	public static class AgentRole {
 		private String role;
@@ -190,7 +211,7 @@ public class User extends BaseApiBean {
 			this.role = role;
 		}
 	}
-	
+
 	@XmlRootElement(name = "settings")
 	public static class AgentSettings {
 		private String wrapUpOnIncoming;
@@ -203,5 +224,25 @@ public class User extends BaseApiBean {
 		public void setWrapUpOnIncoming(String wrapUpOnIncoming) {
 			this.wrapUpOnIncoming = wrapUpOnIncoming;
 		}
+	}
+
+	@XmlRootElement(name = "mobileAgent")
+	public static class MobileAgent {
+		private String mode;
+		private String dialNumber;
+
+		public String getMode() {
+			return mode;
+		}
+		public void setMode(String mode) {
+			this.mode = mode;
+		}
+		public String getDialNumber() {
+			return dialNumber;
+		}
+		public void setDialNumber(String dialNumber) {
+			this.dialNumber = dialNumber;
+		}
+
 	}
 }
